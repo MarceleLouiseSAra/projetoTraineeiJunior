@@ -11,17 +11,16 @@ datasource db {
 }
 
 model User {
-  id_User       Int            @id @default(autoincrement())
-  username      String
-  email         String
-  password      String
-  premium       Boolean        @default(false)
-  profilePic    String?
-  created_at    DateTime       @default(now())
-  MusicsOnUsers MusicsOnUsers?
-  // AlbumsOnUsers AlbumsOnUsers?
-  // ArtistsOnUsers ArtistsOnUsers?
-  
+  id_User        Int              @id @default(autoincrement())
+  username       String
+  email          String
+  password       String
+  premium        Boolean          @default(false)
+  profilePic     String?
+  created_at     DateTime         @default(now())
+  MusicsOnUsers  MusicsOnUsers[]
+  AlbumsOnUsers  AlbumsOnUsers[]
+  ArtistsOnUsers ArtistsOnUsers[]
 }
 
 model Artist {
@@ -31,8 +30,9 @@ model Artist {
   profilePic String?
   joined_in  DateTime @default(now())
 
-  album Album[] @relation("albumArtist")
-  music Music[] @relation("musicArtist")
+  album          Album[]
+  music          Music[]
+  ArtistsOnUsers ArtistsOnUsers?
 }
 
 model Album {
@@ -42,9 +42,10 @@ model Album {
   coverPic    String?
   released_at DateTime @default(now())
 
-  artistId Int     @unique
-  artist   Artist  @relation("albumArtist", fields: [artistId], references: [id_Artist])
-  music    Music[] @relation("musicAlbum")
+  artistId      Int            @unique
+  artist        Artist         @relation(fields: [artistId], references: [id_Artist])
+  music         Music[]
+  AlbumsOnUsers AlbumsOnUsers?
 }
 
 model Music {
@@ -55,9 +56,9 @@ model Music {
   released_at DateTime @default(now())
 
   albumId       Int            @unique
-  album         Album          @relation("musicAlbum", fields: [albumId], references: [id_Album])
+  album         Album          @relation(fields: [albumId], references: [id_Album])
   artistId      Int            @unique
-  artist        Artist         @relation("musicArtist", fields: [artistId], references: [id_Artist])
+  artist        Artist         @relation(fields: [artistId], references: [id_Artist])
   MusicsOnUsers MusicsOnUsers?
 }
 
@@ -72,20 +73,20 @@ model MusicsOnUsers {
   @@id([userId, musicId])
 }
 
-// model AlbumsOnUsers {
-  // userId Int @unique
-  // user User @relation(fields: [userId], references: [id_User])
-  // albumId Int @unique
-  // album Album @relation(fields: [albumId], references: [id_Album])
+model AlbumsOnUsers {
+  userId  Int   @unique
+  user    User  @relation(fields: [userId], references: [id_User])
+  albumId Int   @unique
+  album   Album @relation(fields: [albumId], references: [id_Album])
 
-  // @@([userId, albumId])
-// }
+  @@id([userId, albumId])
+}
 
-// model ArtistsOnUsers {
-  // userId Int @unique
-  // user User @relation(fields: [userId], references: [id_User])
-  // artistId Int @unique
-  // artist Artist @relation(fields: [artistId], references: [id_Artist])
+model ArtistsOnUsers {
+  userId   Int    @unique
+  user     User   @relation(fields: [userId], references: [id_User])
+  artistId Int    @unique
+  artist   Artist @relation(fields: [artistId], references: [id_Artist])
 
-  // @@([userId, artistId])
-// }
+  @@id([userId, artistId])
+}
