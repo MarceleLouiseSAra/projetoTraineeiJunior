@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id_User       Int            @id @default(autoincrement())
+  username      String
+  email         String
+  password      String
+  premium       Boolean        @default(false)
+  profilePic    String?
+  created_at    DateTime       @default(now())
+  MusicsOnUsers MusicsOnUsers?
+  
+}
+
+model Artist {
+  id_Artist  Int      @id @default(autoincrement())
+  username   String
+  streams    Int
+  profilePic String?
+  joined_in  DateTime @default(now())
+
+  album Album[] @relation("albumArtist")
+  music Music[] @relation("musicArtist")
+}
+
+model Album {
+  id_Album    Int      @id @default(autoincrement())
+  title       String
+  genre       String
+  coverPic    String?
+  released_at DateTime @default(now())
+
+  artistId Int     @unique
+  artist   Artist  @relation("albumArtist", fields: [artistId], references: [id_Artist])
+  music    Music[] @relation("musicAlbum")
+}
+
+model Music {
+  id_Music    Int      @id @default(autoincrement())
+  title       String
+  genre       String
+  coverPic    String?
+  released_at DateTime @default(now())
+
+  albumId       Int            @unique
+  album         Album          @relation("musicAlbum", fields: [albumId], references: [id_Album])
+  artistId      Int            @unique
+  artist        Artist         @relation("musicArtist", fields: [artistId], references: [id_Artist])
+  MusicsOnUsers MusicsOnUsers?
+}
+
+// explicit many-to-many relations:
+
+model MusicsOnUsers {
+  userId  Int   @unique
+  user    User  @relation(fields: [userId], references: [id_User])
+  musicId Int   @unique
+  music   Music @relation(fields: [musicId], references: [id_Music])
+
+  @@id([userId, musicId])
+}
