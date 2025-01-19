@@ -1,4 +1,5 @@
 import UserController from "./src/domains/User/controller/UserController";
+import MusicController from "./src/domains/Music/controller/MusicController";
 
 async function main() {
   // const users = await getUsers();
@@ -38,6 +39,59 @@ async function main() {
   // };
   // const album = await AlbumService.createAlbum(Album_body);
   // console.log(album);
+
+
+  // Teste para músicas
+  /*
+  const musicController = new MusicController();
+
+    //Buscar todas as músicas
+    console.log("\n Buscando todas as músicas...");
+    const musicas = await musicController.getMusicas();
+    console.log("Músicas encontradas:", musicas);
+
+    //Buscar música específica pelo ID (teste com ID 1)
+    console.log("\n Buscando música com ID 1...");
+    const musicaById = await musicController.getMusicaPorId(1);
+    console.log("Música encontrada:", musicaById);
+
+    //Criar uma nova música (testando com dados fictícios)
+    console.log("\n Criando uma nova música...");
+    const musicBody = {
+      id_Music: 0,
+      title: "Nova Música Teste",
+      genre: "Rock",
+      coverPic: null,
+      released_at: new Date(),
+      albumId: 1, // Certificar-se de que esse álbum existe no banco
+      artistId: 1, // Certificar-se de que esse artista existe no banco
+    };
+    const novaMusica = await musicController.criarMusica(musicBody);
+    console.log("Música criada:", novaMusica);
+
+    //Atualizar a música recém-criada
+    console.log("\n Atualizando a música...");
+    const updatedMusic = await musicController.atualizarMusica(
+      novaMusica.id_Music,
+      {
+        id_Music: novaMusica.id_Music,
+        title: "Nova Música Atualizada",
+        genre: "Pop",
+        coverPic: novaMusica.coverPic,
+        released_at: novaMusica.released_at,
+        albumId: novaMusica.albumId,
+        artistId: novaMusica.artistId,
+      }
+    );
+    console.log("Música atualizada:", updatedMusic);
+
+    //Deletar a música recém-criada
+    console.log("\n Deletando a música criada...");
+    await musicController.deletarMusica(novaMusica.id_Music);
+    console.log("Música deletada com sucesso!");
+  }
+  
+  */
 }
 
 main();
