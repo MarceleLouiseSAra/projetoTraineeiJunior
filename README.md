@@ -23,3 +23,5 @@ Comandos importantes:
   npx prisma db push
 
   npx prisma migrate dev
+
+  npx prisma studio
