@@ -1,15 +1,25 @@
 # TraineeiJuniorSemana5
 
-npm init -y
+Comandos importantes:
 
-npm install typescript ts-node @types/node --save-dev
+  npm init -y
 
-npx tsc --init
+  npm install typescript ts-node @types/node --save-dev
+  
+  npx tsc --init
+  
+  npm install prisma --save-dev
+  
+  npm install node
+  
+  npm install @prisma/client
+  
+  npx prisma init --datasource-provider sqlite
 
-npm install prisma --save-dev
+  npx prisma validate
 
-npm install node
+  npx prisma generate
 
-npm install @prisma/client
+  npx prisma db push
 
-npx prisma init --datasource-provider sqlite
+  npx prisma migrate dev
