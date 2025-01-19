@@ -7,51 +7,86 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
-  id_User    Int @id @default(autoincrement())
-  username   String
-  email      String
-  password   String
-  premium    Boolean @default(false)
-  profilePic String?
-  created_at String?
+  id_User        Int              @id @default(autoincrement())
+  username       String
+  email          String
+  password       String
+  premium        Boolean          @default(false)
+  profilePic     String?
+  created_at     DateTime         @default(now())
+  MusicsOnUsers  MusicsOnUsers[]
+  AlbumsOnUsers  AlbumsOnUsers[]
+  ArtistsOnUsers ArtistsOnUsers[]
 }
 
 model Artist {
-  id_Artist  Int @id @default(autoincrement())
+  id_Artist  Int      @id @default(autoincrement())
   username   String
   streams    Int
   profilePic String?
-  joined_in  String?
-  
-  album      Album[] @relation("albumsArtist")
-  music      Music[] @relation("musicsArtist")
+  joined_in  DateTime @default(now())
+
+  album          Album[]
+  music          Music[]
+  ArtistsOnUsers ArtistsOnUsers?
 }
 
 model Album {
-  id_Album    Int @id @default(autoincrement())
+  id_Album    Int      @id @default(autoincrement())
   title       String
   genre       String
   coverPic    String?
-  released_at String?
-  
-  artistId    Int @unique
-  artist      Artist @relation("albumsArtist", fields: [artistId], references: [id_Artist])
-  music       Music[] @relation("musicsAlbum")
+  released_at DateTime @default(now())
+
+  artistId      Int            @unique
+  artist        Artist         @relation(fields: [artistId], references: [id_Artist])
+  music         Music[]
+  AlbumsOnUsers AlbumsOnUsers?
 }
 
 model Music {
-  id_Music    Int @id @default(autoincrement())
+  id_Music    Int      @id @default(autoincrement())
   title       String
   genre       String
   coverPic    String?
-  released_at String?
-  
-  albumId     Int @unique
-  album       Album @relation("musicsAlbum", fields: [albumId], references: [id_Album])
-  artistId    Int @unique
-  artist      Artist @relation("musicsArtist", fields: [artistId], references: [id_Artist])
+  released_at DateTime @default(now())
+
+  albumId       Int            @unique
+  album         Album          @relation(fields: [albumId], references: [id_Album])
+  artistId      Int            @unique
+  artist        Artist         @relation(fields: [artistId], references: [id_Artist])
+  MusicsOnUsers MusicsOnUsers?
+}
+
+// explicit many-to-many relations:
+
+model MusicsOnUsers {
+  userId  Int   @unique
+  user    User  @relation(fields: [userId], references: [id_User])
+  musicId Int   @unique
+  music   Music @relation(fields: [musicId], references: [id_Music])
+
+  @@id([userId, musicId])
+}
+
+model AlbumsOnUsers {
+  userId  Int   @unique
+  user    User  @relation(fields: [userId], references: [id_User])
+  albumId Int   @unique
+  album   Album @relation(fields: [albumId], references: [id_Album])
+
+  @@id([userId, albumId])
+}
+
+model ArtistsOnUsers {
+  userId   Int    @unique
+  user     User   @relation(fields: [userId], references: [id_User])
+  artistId Int    @unique
+  artist   Artist @relation(fields: [artistId], references: [id_Artist])
+
+  @@id([userId, artistId])
 }
