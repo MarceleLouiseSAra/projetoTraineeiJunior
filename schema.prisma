@@ -19,6 +19,8 @@ model User {
   profilePic    String?
   created_at    DateTime       @default(now())
   MusicsOnUsers MusicsOnUsers?
+  // AlbumsOnUsers AlbumsOnUsers?
+  // ArtistsOnUsers ArtistsOnUsers?
   
 }
 
@@ -69,3 +71,21 @@ model MusicsOnUsers {
 
   @@id([userId, musicId])
 }
+
+// model AlbumsOnUsers {
+  // userId Int @unique
+  // user User @relation(fields: [userId], references: [id_User])
+  // albumId Int @unique
+  // album Album @relation(fields: [albumId], references: [id_Album])
+
+  // @@([userId, albumId])
+// }
+
+// model ArtistsOnUsers {
+  // userId Int @unique
+  // user User @relation(fields: [userId], references: [id_User])
+  // artistId Int @unique
+  // artist Artist @relation(fields: [artistId], references: [id_Artist])
+
+  // @@([userId, artistId])
+// }
