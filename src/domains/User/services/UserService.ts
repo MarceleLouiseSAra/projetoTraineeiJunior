@@ -2,7 +2,7 @@ import prisma from "../../../../database/prismaClient";
 import { User } from "@prisma/client";
 
 class UserService {
-  async create(body: User) {
+  static async createUser(body: User) {
     const user = {
       username: body.username,
       email: body.email,
@@ -16,4 +16,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+export default UserService;
