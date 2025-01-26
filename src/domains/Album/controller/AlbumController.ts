@@ -3,7 +3,7 @@ import { Router, Request, Response, NextFunction } from "express";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:get", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const albums = await AlbumService.getAlbums();
     res.json(albums);
@@ -12,14 +12,17 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.get("/:ids", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const albumById = await  AlbumService.getAlbumById(Number(req.params.id));
-    res.json(albumById);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get(
+  "/:getById",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const albumById = await AlbumService.getAlbumById(Number(req.params.id));
+      res.json(albumById);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 router.post(
   "/:post",
