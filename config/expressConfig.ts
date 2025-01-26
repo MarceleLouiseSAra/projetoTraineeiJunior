@@ -2,6 +2,9 @@ import cors, { CorsOptions } from "cors";
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import UserRouter from "../src/domains/User/controller/UserController";
+import MusicRouter from "../src/domains/Music/controller/MusicController";
+import AlbumRouter from "../src/domains/Album/controller/AlbumController";
+import ArtistRouter from "../src/domains/Artist/controller/ArtistController";
 
 dotenv.config();
 
@@ -21,3 +24,6 @@ app.use(
 );
 
 app.use("/api/users", UserRouter);
+app.use("/api/musics", MusicRouter);
+app.use("/api/albums", AlbumRouter);
+app.use("/api/artists", ArtistRouter);
