@@ -13,7 +13,7 @@ class AlbumService {
     await prisma.album.create({ data: album });
     return album;
   }
-  
+
   static async getAlbums() {
     const albums = await prisma.album.findMany();
     return albums;
@@ -40,7 +40,6 @@ class AlbumService {
     });
     return { message: "Deletado com sucesso" };
   }
-    
 }
 
 export default AlbumService;

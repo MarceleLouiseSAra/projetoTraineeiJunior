@@ -1,27 +1,15 @@
 import UserService from "../services/UserService";
-import { User } from "@prisma/client";
+import { Router, Request, Response, NextFunction } from "express";
 
+const router = Router();
 
-class UserController {
-  async function criarUser(body: User) {
-    return await UserService.createUser(body);
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await UserService.getUsers();
+    res.json(users);
+  } catch (error) {
+    next(error);
   }
-  
-  async function getUsers() {
-    return await UserService.getUsers();
-  }
-  
-  async function getUserById(requestedId: number) {
-    return await UserService.getUserById(requestedId);
-  }
-  
-  async function atualizarUser(requestedId: number, body: User) {
-    return await UserService.updateUser(requestedId, body);
-  }
-  
-  async function deletarUser(requestedId: number) {
-    await UserService.deleteUser(requestedId);
-  }
-}
+});
 
-export default UserController;
+export default router;

@@ -6,9 +6,9 @@ class ArtistService {
   static async createArtist(body: Omit<Artist, "id_Artist">) {
     const artist = {
       username: body.username,
-      streams: body.streams || 0, 
+      streams: body.streams || 0,
       profilePic: body.profilePic,
-      joined_in: body.joined_in || new Date(), 
+      joined_in: body.joined_in || new Date(),
     };
 
     const createdArtist = await prisma.artist.create({ data: artist });
