@@ -19,19 +19,27 @@
     "@typescript-eslint/parser": "^8.21.0",
     "eslint": "^8.57.1",
     "globals": "^15.14.0",
-    "prisma": "^6.2.1",
+    "prisma": "^6.3.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.21.0"
   },
-  "description": "",
+  "description": "Comandos importantes:",
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "node": "^22.13.0",
+    "node": "^22.13.1",
     "uuidv4": "^6.2.13"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarceleLouiseSAra/TraineeiJuniorSemana5.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MarceleLouiseSAra/TraineeiJuniorSemana5/issues"
+  },
+  "homepage": "https://github.com/MarceleLouiseSAra/TraineeiJuniorSemana5#readme"
 }
