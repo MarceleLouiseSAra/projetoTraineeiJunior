@@ -33,8 +33,6 @@ router.post(
     } catch (error) {
       next(error);
     }
-
-    res.json();
   },
 );
 
