@@ -32,7 +32,6 @@ class UserService {
         username: body.username,
         email: body.email,
         password: body.password,
-        premium: body.premium,
         profilePic: body.profilePic,
       },
       where: {

@@ -14,18 +14,21 @@ class ArtistService {
     const createdArtist = await prisma.artist.create({ data: artist });
     return createdArtist;
   }
+
   static async getArtists() {
     const artists = await prisma.artist.findMany({
       orderBy: { username: "asc" },
     });
     return artists;
   }
+
   static async getArtistById(requestedId: number) {
     const artist = await prisma.artist.findFirst({
       where: { id_Artist: requestedId },
     });
     return artist;
   }
+
   static async updateArtist(requestedId: number, body: any) {
     const updatedArtist = await prisma.artist.update({
       data: {
@@ -38,6 +41,7 @@ class ArtistService {
 
     return updatedArtist;
   }
+  
   static async deleteArtist(requestedId: number) {
     await prisma.artist.delete({ where: { id_Artist: requestedId } });
   }

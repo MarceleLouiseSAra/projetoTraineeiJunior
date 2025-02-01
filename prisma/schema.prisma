@@ -15,7 +15,7 @@ model User {
   username       String
   email          String
   password       String
-  premium        Boolean          @default(false)
+  admin          Boolean          @default(false)
   profilePic     String?
   created_at     DateTime         @default(now())
   MusicsOnUsers  MusicsOnUsers[]
@@ -42,7 +42,7 @@ model Album {
   coverPic    String?
   released_at DateTime @default(now())
 
-  artistId      Int            @unique
+  artistId      Int
   artist        Artist         @relation(fields: [artistId], references: [id_Artist])
   music         Music[]
   AlbumsOnUsers AlbumsOnUsers?
@@ -55,9 +55,9 @@ model Music {
   coverPic    String?
   released_at DateTime @default(now())
 
-  albumId       Int            @unique
+  albumId       Int
   album         Album          @relation(fields: [albumId], references: [id_Album])
-  artistId      Int            @unique
+  artistId      Int
   artist        Artist         @relation(fields: [artistId], references: [id_Artist])
   MusicsOnUsers MusicsOnUsers?
 }
