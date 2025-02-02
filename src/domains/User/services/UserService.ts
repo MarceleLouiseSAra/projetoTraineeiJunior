@@ -1,6 +1,8 @@
 import prisma from "../../../../database/prismaClient";
 import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { InvalidParamError } from "../../../../errors/InvalidParamError";
+import { QueryError } from "../../../../errors/QueryError";
 
 class UserService {
 
@@ -11,7 +13,31 @@ class UserService {
   }
 
   static async createUser(body: User) {
-    body.password = await this.encryptPassword(body.password);
+    if (body.email == null) {
+      throw new InvalidParamError("Email não foi informado!");
+    } else {
+      const checkUser = await prisma.user.findUnique({
+        where: {
+          email: body.email
+        }
+      })
+  
+      if (checkUser) {
+        throw new QueryError("Esse email já está cadastrado!");
+      }
+    }
+    
+    if (body.password == null) {
+      throw new InvalidParamError("Senha não foi informada!");
+    } else {
+      body.password = await this.encryptPassword(body.password);
+    }
+
+    if (body.username == null) {
+      throw new InvalidParamError("Nome de usuário não foi informado!")
+    }
+
+    body.admin = false;
 
     const user = {
       username: body.username,
@@ -38,6 +64,30 @@ class UserService {
   }
 
   static async updateUser(requestedId: number, body: User) {
+    if (body.email == null) {
+      throw new InvalidParamError("Email não foi informado!");
+    } else {
+      const checkUser = await prisma.user.findUnique({
+        where: {
+          email: body.email
+        }
+      })
+  
+      if (checkUser) {
+        throw new QueryError("Esse email já está cadastrado!");
+      }
+    }
+    
+    if (body.password == null) {
+      throw new InvalidParamError("Senha não foi informada!");
+    } else {
+      body.password = await this.encryptPassword(body.password);
+    }
+
+    if (body.username == null) {
+      throw new InvalidParamError("Nome de usuário não foi informado!")
+    }
+
     const updateUser = await prisma.user.update({
       data: {
         username: body.username,

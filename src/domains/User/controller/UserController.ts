@@ -1,5 +1,7 @@
 import UserService from "../services/UserService";
+import MusicService from "../../Music/services/MusicService";
 import { Router, Request, Response, NextFunction } from "express";
+import statusCodes from "../../../../utils/constants/statusCodes";
 
 const router = Router();
 
@@ -25,11 +27,11 @@ router.get(
 );
 
 router.post(
-  "/:post",
+  "/:create",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = await UserService.createUser(req.body);
-      res.json(newUser);
+      res.status(statusCodes.SUCCESS).json(newUser);
     } catch (error) {
       next(error);
     }
@@ -37,7 +39,7 @@ router.post(
 );
 
 router.put(
-  "/:update",
+  "/account/update/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedUser = await UserService.updateUser(
@@ -62,5 +64,25 @@ router.delete(
     }
   },
 );
+
+router.put("/account/listen/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const musicById = await MusicService.getMusicById(Number(req.params.id));
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+router.put("/account/unlisten/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const musicById = await MusicService.getMusicById(Number(req.params.id));
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 export default router;

@@ -3,7 +3,7 @@ import { Router, Request, Response, NextFunction } from "express";
 
 const router = Router();
 
-router.get("/:get", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const artists = await ArtistService.getArtists();
     res.json(artists);
