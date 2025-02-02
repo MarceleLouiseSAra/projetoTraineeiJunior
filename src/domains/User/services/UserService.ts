@@ -16,6 +16,7 @@ class UserService {
       email: body.email,
       password: body.password,
       profilePic: body.profilePic,
+      admin: body.admin
     } as User;
 
     await prisma.user.create({ data: user });
