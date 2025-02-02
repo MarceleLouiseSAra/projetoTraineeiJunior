@@ -4,13 +4,15 @@ import bcrypt from "bcrypt";
 
 class UserService {
 
-  async encryptPassword(password: string){
+  static async encryptPassword(password: string){
     const saltRounds = 10;
     const encrypted = await bcrypt.hash(password, saltRounds);
     return encrypted;
   }
 
   static async createUser(body: User) {
+    body.password = await this.encryptPassword(body.password);
+
     const user = {
       username: body.username,
       email: body.email,
