@@ -25,3 +25,15 @@ Comandos importantes:
   npx prisma migrate dev
 
   npx prisma studio
+
+  npm install bcrypt
+
+  npm install --save @types/bcrypt
+
+  npm install cookie parser
+
+  npm install @types/cookie-parser
+
+  npm install jsonwebtoken
+
+  npm install --save @types/jsonwebtoken
