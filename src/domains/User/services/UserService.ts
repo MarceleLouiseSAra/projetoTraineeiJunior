@@ -58,7 +58,7 @@ class UserService {
   }
 
   static async getUserById(requestedId: number) {
-    const userById = await prisma.user.findFirst({
+    const userById = await prisma.user.findUnique({
       where: { id_User: requestedId },
     });
     return userById;

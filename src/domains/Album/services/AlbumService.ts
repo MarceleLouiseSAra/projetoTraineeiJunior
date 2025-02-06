@@ -15,30 +15,29 @@ class AlbumService {
   }
 
   static async getAlbums() {
-    const albums = await prisma.album.findMany();
+    const albums = await prisma.album.findMany({ orderBy: { title: "asc" } });
     return albums;
   }
 
-  static async getAlbumById(id: number) {
-    const album = await prisma.album.findUnique({
-      where: { id_Album: id },
+  static async getAlbumById(requestedId: number) {
+    const albumById = await prisma.album.findUnique({
+      where: { id_Album: requestedId },
     });
-    return album;
+    return albumById;
   }
 
-  static async updateAlbum(id: number, body: Partial<Album>) {
+  static async updateAlbum(requestedId: number, body: Partial<Album>) {
     const updatedAlbum = await prisma.album.update({
-      where: { id_Album: id },
+      where: { id_Album: requestedId },
       data: body,
     });
     return updatedAlbum;
   }
 
-  static async deleteAlbum(id: number) {
+  static async deleteAlbum(requestedId: number) {
     await prisma.album.delete({
-      where: { id_Album: id },
+      where: { id_Album: requestedId },
     });
-    return { message: "Deletado com sucesso" };
   }
 }
 

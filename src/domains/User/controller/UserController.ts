@@ -46,7 +46,7 @@ router.put(
         Number(req.params.id),
         req.body,
       );
-      res.json(updatedUser);
+      res.status(statusCodes.ACCEPTED).json(updatedUser);
     } catch (error) {
       next(error);
     }
@@ -58,8 +58,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.deleteUser(Number(req.params.delete));
-      res.status(statusCodes.SUCCESS);
-      res.json()
+      res.status(statusCodes.SUCCESS).json()
     } catch (error) {
       next(error);
     }
