@@ -15,7 +15,7 @@ router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get(
-  "/:id",
+  "/get/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userById = await UserService.getUserById(Number(req.params.id));

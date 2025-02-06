@@ -14,7 +14,7 @@ router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get(
-  "/:id",
+  "/get/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const musicById = await MusicService.getMusicById(Number(req.params.id));
