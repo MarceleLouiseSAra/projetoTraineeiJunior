@@ -3,6 +3,7 @@ import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { InvalidParamError } from "../../../../errors/InvalidParamError";
 import { QueryError } from "../../../../errors/QueryError";
+import { NotAuthorizedError } from "../../../../errors/NotAuthorizedError";
 
 class UserService {
 
@@ -57,10 +58,10 @@ class UserService {
   }
 
   static async getUserById(requestedId: number) {
-    const user = await prisma.user.findFirst({
+    const userById = await prisma.user.findFirst({
       where: { id_User: requestedId },
     });
-    return user;
+    return userById;
   }
 
   static async updateUser(requestedId: number, body: User) {
@@ -73,20 +74,26 @@ class UserService {
         }
       })
   
-      if (checkUser) {
-        throw new QueryError("Esse email já está cadastrado!");
+      if (body.email != checkUser?.email) {
+        throw new NotAuthorizedError("Não é possível trocar o email!");
       }
     }
     
     if (body.password == null) {
       throw new InvalidParamError("Senha não foi informada!");
     } else {
-      body.password = await this.encryptPassword(body.password);
+      // const encryptedPassword = await this.encryptPassword(body.password);
+      // if(body.password != encryptedPassword){
+      //   console.log(encryptedPassword)
+      //   throw new InvalidParamError("Email, senha ou nome de usuário incorreto(s)!");
+      // }
     }
 
     if (body.username == null) {
       throw new InvalidParamError("Nome de usuário não foi informado!")
     }
+
+    body.admin = false;
 
     const updateUser = await prisma.user.update({
       data: {
@@ -94,10 +101,11 @@ class UserService {
         email: body.email,
         password: body.password,
         profilePic: body.profilePic,
-      },
+        admin: body.admin
+      } as User,
       where: {
         id_User: requestedId,
-      },
+      }
     });
 
     return updateUser;

@@ -5,21 +5,21 @@ import statusCodes from "../../../../utils/constants/statusCodes";
 
 const router = Router();
 
-router.get("/:get", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await UserService.getUsers();
-    res.json(users);
+    res.status(statusCodes.SUCCESS).json(users);
   } catch (error) {
     next(error);
   }
 });
 
 router.get(
-  "/:getById",
+  "/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userById = await UserService.getUserById(Number(req.params.id));
-      res.json(userById);
+      res.status(statusCodes.SUCCESS).json(userById);
     } catch (error) {
       next(error);
     }
@@ -31,7 +31,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = await UserService.createUser(req.body);
-      res.status(statusCodes.SUCCESS).json(newUser);
+      res.status(statusCodes.CREATED).json(newUser);
     } catch (error) {
       next(error);
     }
@@ -43,7 +43,7 @@ router.put(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedUser = await UserService.updateUser(
-        Number(req.params.update),
+        Number(req.params.id),
         req.body,
       );
       res.json(updatedUser);
@@ -58,7 +58,8 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.deleteUser(Number(req.params.delete));
-      res.json();
+      res.status(statusCodes.SUCCESS);
+      res.json()
     } catch (error) {
       next(error);
     }
