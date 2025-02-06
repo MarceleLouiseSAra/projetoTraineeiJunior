@@ -27,7 +27,7 @@ router.get(
 );
 
 router.post(
-  "/:create",
+  "/create",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = await UserService.createUser(req.body);
@@ -54,10 +54,10 @@ router.put(
 );
 
 router.delete(
-  "/:delete",
+  "/delete/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.deleteUser(Number(req.params.delete));
+      await UserService.deleteUser(Number(req.params.id));
       res.status(statusCodes.SUCCESS).json()
     } catch (error) {
       next(error);

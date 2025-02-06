@@ -23,7 +23,7 @@ class ArtistService {
   }
 
   static async getArtistById(requestedId: number) {
-    const artist = await prisma.artist.findFirst({
+    const artist = await prisma.artist.findUnique({
       where: { id_Artist: requestedId },
     });
     return artist;

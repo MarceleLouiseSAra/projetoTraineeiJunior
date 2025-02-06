@@ -23,7 +23,7 @@ class MusicService {
   }
 
   static async getMusicById(requestedId: number) {
-    const music = await prisma.music.findFirst({
+    const music = await prisma.music.findUnique({
       where: { id_Music: requestedId },
     });
     return music;

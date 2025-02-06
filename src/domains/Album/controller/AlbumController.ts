@@ -26,7 +26,7 @@ router.get(
 );
 
 router.post(
-  "/:post",
+  "/post",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newAlbum = await AlbumService.createAlbum(req.body);
@@ -40,11 +40,11 @@ router.post(
 );
 
 router.put(
-  "/:update",
+  "/update/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedAlbum = await AlbumService.updateAlbum(
-        Number(req.params.update),
+        Number(req.params.id),
         req.body,
       );
       res.status(statusCodes.ACCEPTED).json(updatedAlbum);
@@ -55,10 +55,10 @@ router.put(
 );
 
 router.delete(
-  "/:delete",
+  "/delete/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await AlbumService.deleteAlbum(Number(req.params.delete));
+      await AlbumService.deleteAlbum(Number(req.params.id));
       res.status(statusCodes.SUCCESS).json();
     } catch (error) {
       next(error);
