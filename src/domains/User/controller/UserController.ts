@@ -30,8 +30,23 @@ router.post(
   "/create",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const newUser = await UserService.createUser(req.body);
+      const newUser = await UserService.createUser(false, req.body);
       res.status(statusCodes.CREATED).json(newUser);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+router.post(
+  "/admin/create/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const admin = await UserService.getUserById(Number(req.params.id));
+      if(admin?.admin != null){
+        const userCreatedByAdmin = await UserService.createUser(admin?.admin, req.body);
+        res.status(statusCodes.CREATED).json(userCreatedByAdmin);
+      }
     } catch (error) {
       next(error);
     }

@@ -13,7 +13,7 @@ class UserService {
     return encrypted;
   }
 
-  static async createUser(body: User) {
+  static async createUser(admin: boolean, body: User) {
     if (body.email == null) {
       throw new InvalidParamError("Email não foi informado!");
     } else {
@@ -38,7 +38,11 @@ class UserService {
       throw new InvalidParamError("Nome de usuário não foi informado!")
     }
 
-    body.admin = false;
+    if (!admin && body.admin) {
+      throw new NotAuthorizedError("Somente administradores podem designar outros administradores!");
+    } else if(!admin) {
+      body.admin = false;
+    }
 
     const user = {
       username: body.username,
@@ -51,6 +55,7 @@ class UserService {
     await prisma.user.create({ data: user });
     return user;
   }
+
 
   static async getUsers() {
     const users = await prisma.user.findMany({ orderBy: { username: "asc" } });
