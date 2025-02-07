@@ -1,5 +1,6 @@
 import prisma from "../../../../database/prismaClient";
 import { User } from "@prisma/client";
+import MusicService from "../../Music/services/MusicService";
 import bcrypt from "bcrypt";
 import { InvalidParamError } from "../../../../errors/InvalidParamError";
 import { QueryError } from "../../../../errors/QueryError";
@@ -118,6 +119,53 @@ class UserService {
 
   static async deleteUser(requestedId: number) {
     await prisma.user.delete({ where: { id_User: requestedId } });
+  }
+
+  static async listenToMusic(usersId: number, musicsId: number) {
+    const userById = await UserService.getUserById(usersId);
+    const musicById = await MusicService.getMusicById(musicsId);
+    if (!musicById) {
+      throw new QueryError("Não existe uma música com esse id!")
+    } else if (!userById) {
+      throw new QueryError("Não existe um usuário com esse id!")
+    } else {
+      await prisma.user.update({
+        where: {
+          id_User: usersId
+        },
+        data: {
+          MusicsOnUsers: {
+            connect: {
+              musicId: musicsId
+            }
+          }
+        }
+      })
+    }
+
+  }
+
+  static async unlistenToMusic(usersId: number, musicsId: number) {
+    const userById = await UserService.getUserById(usersId);
+    const musicById = await MusicService.getMusicById(musicsId);
+    if (!musicById) {
+      throw new QueryError("Não existe uma música com esse id!")
+    } else if (!userById) {
+      throw new QueryError("Não existe um usuário com esse id!")
+    } else {
+      await prisma.user.update({
+        where: {
+          id_User: usersId
+        },
+        data: {
+          MusicsOnUsers: {
+            disconnect: {
+              musicId: musicsId
+            }
+          }
+        }
+      })
+    }
   }
 }
 

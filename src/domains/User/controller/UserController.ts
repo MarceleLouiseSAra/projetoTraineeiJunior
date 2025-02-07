@@ -1,5 +1,4 @@
 import UserService from "../services/UserService";
-import MusicService from "../../Music/services/MusicService";
 import { Router, Request, Response, NextFunction } from "express";
 import statusCodes from "../../../../utils/constants/statusCodes";
 
@@ -80,20 +79,22 @@ router.delete(
   },
 );
 
-router.put("/account/listen/:id",
+router.put("/account/listen/:usersId/:musicsId",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const musicById = await MusicService.getMusicById(Number(req.params.id));
+      await UserService.listenToMusic(Number(req.params.usersId), Number(req.params.musicsId));
+      res.status(statusCodes.SUCCESS).json()
     } catch (error) {
       next(error)
     }
   }
 )
 
-router.put("/account/unlisten/:id",
+router.put("/account/unlisten/:usersId/:musicsId",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const musicById = await MusicService.getMusicById(Number(req.params.id));
+      await UserService.unlistenToMusic(Number(req.params.usersId), Number(req.params.musicsId));
+      res.status(statusCodes.SUCCESS).json()
     } catch (error) {
       next(error)
     }
