@@ -4,7 +4,7 @@ import statusCodes from "../../../../utils/constants/statusCodes";
 
 const router = Router();
 
-router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const artists = await ArtistService.getArtists();
     res.status(statusCodes.SUCCESS).json(artists);

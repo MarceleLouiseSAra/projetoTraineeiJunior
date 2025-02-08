@@ -9,9 +9,9 @@ import { TokenError } from "../../errors/TokenError";
 
 function generateJWT(user: User, res: Response) {
     const body = {
-        id: user.id_User,
+        id_User: user.id_User,
         email: user.email,
-        role: user.admin,
+        admin: user.admin,
         name: user.username
     };
 

@@ -73,7 +73,7 @@ class UserService {
           email: body.email
         }
       })
-  
+      
       if (body.email != checkUser?.email) {
         throw new NotAuthorizedError("Não é possível trocar o email!");
       }
@@ -82,27 +82,28 @@ class UserService {
     if (body.password == null) {
       throw new InvalidParamError("Senha não foi informada!");
     }
-
+    
     if (body.username == null) {
       throw new InvalidParamError("Nome de usuário não foi informado!")
     }
+    
+    if (requestedId) {
+      const updateUser = await prisma.user.update({
+        data: {
+          username: body.username,
+          email: body.email,
+          password: body.password,
+          profilePic: body.profilePic,
+          admin: body.admin
+        } as User,
+        where: {
+          id_User: requestedId,
+        }
+      });
+      
+      return updateUser;
+    }
 
-    body.admin = false;
-
-    const updateUser = await prisma.user.update({
-      data: {
-        username: body.username,
-        email: body.email,
-        password: body.password,
-        profilePic: body.profilePic,
-        admin: body.admin
-      } as User,
-      where: {
-        id_User: requestedId,
-      }
-    });
-
-    return updateUser;
   }
 
   static async deleteUser(requestedId: number) {

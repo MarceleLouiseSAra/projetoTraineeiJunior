@@ -42,7 +42,6 @@ router.post(
   "/admin/create", checkRole,
   async ( req: Request, res: Response, next: NextFunction) => {
     try {
-      checkRole(req, res, next);
       const userCreatedByAdmin = await UserService.createUser(req.body);
       res.status(statusCodes.CREATED).json(userCreatedByAdmin);
     } catch (error) {
@@ -52,14 +51,25 @@ router.post(
 );
 
 router.put(
-  "/account/update/:id",
+  "/update/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      checkRole(req, res, next);
       const updatedUser = await UserService.updateUser(
         Number(req.params.id),
         req.body,
       );
+      res.status(statusCodes.ACCEPTED).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+router.put(
+  "/account/update", verifyJWT, 
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const updatedUser = await UserService.updateUser(Number(req.user.id_User), req.body);
       res.status(statusCodes.ACCEPTED).json(updatedUser);
     } catch (error) {
       next(error);
