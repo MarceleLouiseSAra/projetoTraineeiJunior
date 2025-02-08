@@ -5,7 +5,8 @@ import { login, checkRole, verifyJWT } from "../../../middlewares/authentication
 
 const router = Router();
 
-router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", checkRole, verifyJWT,
+  async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await UserService.getUsers();
     res.status(statusCodes.SUCCESS).json(users);
@@ -15,7 +16,7 @@ router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get(
-  "/get/:id",
+  "/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userById = await UserService.getUserById(Number(req.params.id));
@@ -27,7 +28,7 @@ router.get(
 );
 
 router.post(
-  "/create",
+  "/create", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = await UserService.createUser(req.body);
@@ -39,7 +40,7 @@ router.post(
 );
 
 router.post(
-  "/admin/create", checkRole,
+  "/admin/create", checkRole, verifyJWT,
   async ( req: Request, res: Response, next: NextFunction) => {
     try {
       const userCreatedByAdmin = await UserService.createUser(req.body);
@@ -78,7 +79,7 @@ router.put(
 );
 
 router.delete(
-  "/delete/:id",
+  "/delete/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.deleteUser(Number(req.params.id));

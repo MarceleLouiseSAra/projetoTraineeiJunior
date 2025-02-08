@@ -1,10 +1,12 @@
 import ArtistService from "../services/ArtistService";
 import { Router, Request, Response, NextFunction } from "express";
 import statusCodes from "../../../../utils/constants/statusCodes";
+import { checkRole, verifyJWT } from "../../../middlewares/authentications";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", verifyJWT,
+  async (req: Request, res: Response, next: NextFunction) => {
   try {
     const artists = await ArtistService.getArtists();
     res.status(statusCodes.SUCCESS).json(artists);
@@ -14,7 +16,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get(
-  "/get/:id",
+  "/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const artistById = await ArtistService.getArtistById(
@@ -28,7 +30,7 @@ router.get(
 );
 
 router.post(
-  "/post",
+  "/create", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newArtist = await ArtistService.createArtist(req.body);
@@ -40,7 +42,7 @@ router.post(
 );
 
 router.put(
-  "/update/:id",
+  "/update/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedArtist = await ArtistService.updateArtist(
@@ -55,7 +57,7 @@ router.put(
 );
 
 router.delete(
-  "/delete/:id",
+  "/delete/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ArtistService.deleteArtist(Number(req.params.id));

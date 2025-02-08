@@ -31,6 +31,8 @@ function cookieExtractor(req: Request){
     return token;  
 }
 
+// middlewares:
+
 export function verifyJWT(req: Request, res: Response, next: NextFunction){
     try {
         const token = cookieExtractor(req);
@@ -38,17 +40,30 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction){
             const decoded = verify(token, process.env.SECRET_KEY || "") as JwtPayload;
             req.user = decoded.user;
         }
-
+        
         if (req.user == null) {
             throw new TokenError("É necessário estar logado para realizar esta ação!")
         }
-
+        
         next();
-
+        
     } catch (error) {
         next(error);
     }
 }
+
+export async function checkRole(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (req.user?.admin !== true && req.body.admin == true) {
+            throw new PermissionError("Somente administradores podem designar outros administradores!");
+        }
+        res.status(statusCodes.ACCEPTED).json()
+    } catch (error) {
+        next (error);
+    }
+}
+
+// autenticações:
 
 export async function login(req: Request, res: Response, next: NextFunction) {
     try {
@@ -87,17 +102,6 @@ export async function notLoggedIn(req: Request, res: Response, next: NextFunctio
 export async function logout(req: Request, res: Response, next: NextFunction) {
     try {
 
-    } catch (error) {
-        next (error);
-    }
-}
-
-export async function checkRole(req: Request, res: Response, next: NextFunction) {
-    try {
-        if (req.user?.admin !== true && req.body.admin == true) {
-            throw new PermissionError("Somente administradores podem designar outros administradores!");
-        }
-        res.status(statusCodes.ACCEPTED).json()
     } catch (error) {
         next (error);
     }

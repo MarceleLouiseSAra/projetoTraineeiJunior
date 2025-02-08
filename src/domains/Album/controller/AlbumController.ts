@@ -1,10 +1,12 @@
 import AlbumService from "../services/AlbumService";
 import { Router, Request, Response, NextFunction } from "express";
 import statusCodes from "../../../../utils/constants/statusCodes";
+import { checkRole, verifyJWT } from "../../../middlewares/authentications";
 
 const router = Router();
 
-router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", verifyJWT,
+  async (req: Request, res: Response, next: NextFunction) => {
   try {
     const albums = await AlbumService.getAlbums();
     res.status(statusCodes.SUCCESS).json(albums);
@@ -14,7 +16,7 @@ router.get("/get", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get(
-  "/get/:id",
+  "/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const albumById = await AlbumService.getAlbumById(Number(req.params.id));
@@ -26,7 +28,7 @@ router.get(
 );
 
 router.post(
-  "/post",
+  "/create", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newAlbum = await AlbumService.createAlbum(req.body);
@@ -40,7 +42,7 @@ router.post(
 );
 
 router.put(
-  "/update/:id",
+  "/update/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedAlbum = await AlbumService.updateAlbum(
@@ -55,7 +57,7 @@ router.put(
 );
 
 router.delete(
-  "/delete/:id",
+  "/delete/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await AlbumService.deleteAlbum(Number(req.params.id));
