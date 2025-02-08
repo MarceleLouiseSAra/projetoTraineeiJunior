@@ -30,9 +30,9 @@ Comandos importantes:
 
   npm install --save @types/bcrypt
 
-  npm install cookie parser
+  npm install cookie-parser
 
-  npm install @types/cookie-parser
+  npm install --save @types/cookie-parser
 
   npm install jsonwebtoken
 

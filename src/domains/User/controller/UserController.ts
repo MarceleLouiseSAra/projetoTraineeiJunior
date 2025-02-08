@@ -1,6 +1,7 @@
 import UserService from "../services/UserService";
 import { Router, Request, Response, NextFunction } from "express";
 import statusCodes from "../../../../utils/constants/statusCodes";
+import { login, verifyJWT } from "../../../middlewares/authentications";
 
 const router = Router();
 
@@ -79,6 +80,8 @@ router.delete(
   },
 );
 
+router.post("/login", login);
+
 router.put("/account/listen/:usersId/:musicsId",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -88,7 +91,7 @@ router.put("/account/listen/:usersId/:musicsId",
       next(error)
     }
   }
-)
+);
 
 router.put("/account/unlisten/:usersId/:musicsId",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -99,6 +102,6 @@ router.put("/account/unlisten/:usersId/:musicsId",
       next(error)
     }
   }
-)
+);
 
 export default router;
