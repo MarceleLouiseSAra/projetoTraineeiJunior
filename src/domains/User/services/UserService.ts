@@ -113,7 +113,7 @@ class UserService {
     const musicById = await MusicService.getMusicById(musicsId);
     if (!musicById) {
       throw new QueryError("Não existe uma música com esse id!")
-    } else {
+    } else if (usersId) {
       await prisma.user.update({
         where: {
           id_User: usersId
@@ -134,7 +134,7 @@ class UserService {
     const musicById = await MusicService.getMusicById(musicsId);
     if (!musicById) {
       throw new QueryError("Não existe uma música com esse id!")
-    } else {
+    } else if (usersId) {
       await prisma.user.update({
         where: {
           id_User: usersId

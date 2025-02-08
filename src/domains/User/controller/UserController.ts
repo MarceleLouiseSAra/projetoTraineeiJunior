@@ -39,7 +39,7 @@ router.post(
 );
 
 router.post(
-  "/admin/create/:id", checkRole,
+  "/admin/create", checkRole,
   async ( req: Request, res: Response, next: NextFunction) => {
     try {
       checkRole(req, res, next);
@@ -55,6 +55,7 @@ router.put(
   "/account/update/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(req, res, next);
       const updatedUser = await UserService.updateUser(
         Number(req.params.id),
         req.body,
@@ -80,7 +81,7 @@ router.delete(
 
 router.post("/login", login);
 
-router.put("/account/listen/:id", verifyJWT,
+router.put("/account/listen/:id", verifyJWT, 
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.listenToMusic(Number(req.params.id), Number(req.user.id_User));
@@ -91,7 +92,7 @@ router.put("/account/listen/:id", verifyJWT,
   }
 );
 
-router.put("/account/unlisten/:id", verifyJWT,
+router.put("/account/unlisten/:id", verifyJWT, 
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.unlistenToMusic(Number(req.params.id), Number(req.user.id_User));
