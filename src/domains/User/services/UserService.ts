@@ -14,7 +14,7 @@ class UserService {
     return encrypted;
   }
 
-  static async createUser(admin: boolean, body: User) {
+  static async createUser(body: User) {
     if (body.email == null) {
       throw new InvalidParamError("Email não foi informado!");
     } else {
@@ -37,12 +37,6 @@ class UserService {
 
     if (body.username == null) {
       throw new InvalidParamError("Nome de usuário não foi informado!")
-    }
-
-    if (!admin && body.admin) {
-      throw new NotAuthorizedError("Somente administradores podem designar outros administradores!");
-    } else if(!admin) {
-      body.admin = false;
     }
 
     const user = {
@@ -87,12 +81,6 @@ class UserService {
     
     if (body.password == null) {
       throw new InvalidParamError("Senha não foi informada!");
-    } else {
-      // const encryptedPassword = await this.encryptPassword(body.password);
-      // if(body.password != encryptedPassword){
-      //   console.log(encryptedPassword)
-      //   throw new InvalidParamError("Email, senha ou nome de usuário incorreto(s)!");
-      // }
     }
 
     if (body.username == null) {
@@ -121,13 +109,10 @@ class UserService {
     await prisma.user.delete({ where: { id_User: requestedId } });
   }
 
-  static async listenToMusic(usersId: number, musicsId: number) {
-    const userById = await UserService.getUserById(usersId);
+  static async listenToMusic(musicsId: number, usersId: number) {
     const musicById = await MusicService.getMusicById(musicsId);
     if (!musicById) {
       throw new QueryError("Não existe uma música com esse id!")
-    } else if (!userById) {
-      throw new QueryError("Não existe um usuário com esse id!")
     } else {
       await prisma.user.update({
         where: {
@@ -145,13 +130,10 @@ class UserService {
 
   }
 
-  static async unlistenToMusic(usersId: number, musicsId: number) {
-    const userById = await UserService.getUserById(usersId);
+  static async unlistenToMusic(musicsId: number, usersId: number) {
     const musicById = await MusicService.getMusicById(musicsId);
     if (!musicById) {
       throw new QueryError("Não existe uma música com esse id!")
-    } else if (!userById) {
-      throw new QueryError("Não existe um usuário com esse id!")
     } else {
       await prisma.user.update({
         where: {

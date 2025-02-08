@@ -94,7 +94,10 @@ export async function logout(req: Request, res: Response, next: NextFunction) {
 
 export async function checkRole(req: Request, res: Response, next: NextFunction) {
     try {
-
+        if (req.user?.admin !== true && req.body.admin == true) {
+            throw new PermissionError("Somente administradores podem designar outros administradores!");
+        }
+        res.status(statusCodes.ACCEPTED).json()
     } catch (error) {
         next (error);
     }

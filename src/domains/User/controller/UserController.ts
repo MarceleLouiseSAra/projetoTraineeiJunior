@@ -1,7 +1,7 @@
 import UserService from "../services/UserService";
 import { Router, Request, Response, NextFunction } from "express";
 import statusCodes from "../../../../utils/constants/statusCodes";
-import { login, verifyJWT } from "../../../middlewares/authentications";
+import { login, checkRole, verifyJWT } from "../../../middlewares/authentications";
 
 const router = Router();
 
@@ -30,7 +30,7 @@ router.post(
   "/create",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const newUser = await UserService.createUser(false, req.body);
+      const newUser = await UserService.createUser(req.body);
       res.status(statusCodes.CREATED).json(newUser);
     } catch (error) {
       next(error);
@@ -39,14 +39,12 @@ router.post(
 );
 
 router.post(
-  "/admin/create/:id",
-  async (req: Request, res: Response, next: NextFunction) => {
+  "/admin/create/:id", checkRole,
+  async ( req: Request, res: Response, next: NextFunction) => {
     try {
-      const admin = await UserService.getUserById(Number(req.params.id));
-      if(admin?.admin != null){
-        const userCreatedByAdmin = await UserService.createUser(admin?.admin, req.body);
-        res.status(statusCodes.CREATED).json(userCreatedByAdmin);
-      }
+      checkRole(req, res, next);
+      const userCreatedByAdmin = await UserService.createUser(req.body);
+      res.status(statusCodes.CREATED).json(userCreatedByAdmin);
     } catch (error) {
       next(error);
     }
@@ -82,10 +80,10 @@ router.delete(
 
 router.post("/login", login);
 
-router.put("/account/listen/:usersId/:musicsId",
+router.put("/account/listen/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.listenToMusic(Number(req.params.usersId), Number(req.params.musicsId));
+      await UserService.listenToMusic(Number(req.params.id), Number(req.user.id_User));
       res.status(statusCodes.SUCCESS).json()
     } catch (error) {
       next(error)
@@ -93,10 +91,10 @@ router.put("/account/listen/:usersId/:musicsId",
   }
 );
 
-router.put("/account/unlisten/:usersId/:musicsId",
+router.put("/account/unlisten/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.unlistenToMusic(Number(req.params.usersId), Number(req.params.musicsId));
+      await UserService.unlistenToMusic(Number(req.params.id), Number(req.user.id_User));
       res.status(statusCodes.SUCCESS).json()
     } catch (error) {
       next(error)
