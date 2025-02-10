@@ -5,7 +5,7 @@ import { login, checkRole, verifyJWT } from "../../../middlewares/authentication
 
 const router = Router();
 
-router.get("/", checkRole, verifyJWT,
+router.get("/", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await UserService.getUsers();
@@ -16,7 +16,7 @@ router.get("/", checkRole, verifyJWT,
 });
 
 router.get(
-  "/:id", checkRole, verifyJWT,
+  "/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userById = await UserService.getUserById(Number(req.params.id));
@@ -40,7 +40,7 @@ router.post(
 );
 
 router.post(
-  "/admin/create", checkRole, verifyJWT,
+  "/admin/create", verifyJWT,
   async ( req: Request, res: Response, next: NextFunction) => {
     try {
       const userCreatedByAdmin = await UserService.createUser(req.body);
@@ -52,7 +52,7 @@ router.post(
 );
 
 router.put(
-  "/update/:id", checkRole, verifyJWT,
+  "/update/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const updatedUser = await UserService.updateUser(
@@ -79,7 +79,7 @@ router.put(
 );
 
 router.delete(
-  "/delete/:id", checkRole, verifyJWT,
+  "/delete/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.deleteUser(Number(req.params.id));
