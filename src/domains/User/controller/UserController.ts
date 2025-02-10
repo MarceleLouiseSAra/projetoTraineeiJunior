@@ -114,4 +114,18 @@ router.put("/account/unlisten/:id", verifyJWT,
   }
 );
 
+
+router.put("/account/password", verifyJWT,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = Number(req.user.id_User); 
+      const { currentPassword, newPassword } = req.body;
+      await UserService.changePassword(userId, currentPassword, newPassword);
+      res.status(statusCodes.SUCCESS).json({ message: "Senha alterada com sucesso!" });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;
