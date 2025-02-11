@@ -13,6 +13,23 @@ class UserService {
     const encrypted = await bcrypt.hash(password, saltRounds);
     return encrypted;
   }
+  static async changePassword(userId: number, currentPassword: string, newPassword: string) {
+    const user = await prisma.user.findUnique({
+      where: { id_User: userId },
+      });
+    if (!user) {
+      throw new QueryError("Usuário não encontrado!");
+      } 
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordValid) {
+      throw new NotAuthorizedError("Senha atual incorreta!");
+      } 
+      const encryptedPassword = await this.encryptPassword(newPassword);
+        await prisma.user.update({
+        where: { id_User: userId },
+        data: { password: encryptedPassword },
+      });
+    }
 
   static async createUser(body: User) {
     if (body.email == null) {

@@ -27,6 +27,22 @@ router.get(
   },
 );
 
+router.get(
+  "/get/:id", verifyJWT, checkRole,  
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const musicId = Number(req.params.id);
+      const music = await MusicService.getMusicById(musicId);
+      if (!music) {
+        return res.status(statusCodes.NOT_FOUND).json({ message: "Música não encontrada!" });
+      }
+      res.status(statusCodes.SUCCESS).json(music);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.post(
   "/create", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {

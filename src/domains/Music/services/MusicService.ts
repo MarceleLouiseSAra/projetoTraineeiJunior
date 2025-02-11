@@ -29,6 +29,15 @@ class MusicService {
     return music;
   }
 
+  static async getMusicsHeardByUser(userId: number) {
+    const musics = await prisma.musicsOnUsers.findMany({
+      where: { userId },
+      include: { music: true },
+    });
+  
+    return musics.map((entry: { music: Music }) => entry.music);
+  }
+  
   static async updateMusic(requestedId: number, body: Music) {
     const updatedMusic = await prisma.music.update({
       data: {

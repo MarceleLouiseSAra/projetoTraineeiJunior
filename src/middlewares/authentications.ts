@@ -102,6 +102,11 @@ export async function notLoggedIn(req: Request, res: Response, next: NextFunctio
 
 export async function logout(req: Request, res: Response, next: NextFunction) {
     try {
+        res.clearCookie("jwt", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development", sameSite: "strict", 
+        });
+        res.status(statusCodes.SUCCESS).json("Logout realizado com sucesso!" );
 
     } catch (error) {
         next (error);
