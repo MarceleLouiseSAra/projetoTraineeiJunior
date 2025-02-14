@@ -3,10 +3,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = "file:./dev.db"
 }
 
@@ -17,7 +18,7 @@ model User {
   password       String
   admin          Boolean
   profilePic     String?
-  created_at     DateTime         @default(now())
+  created_at     DateTime?        @default(now())
   MusicsOnUsers  MusicsOnUsers[]
   AlbumsOnUsers  AlbumsOnUsers[]
   ArtistsOnUsers ArtistsOnUsers[]

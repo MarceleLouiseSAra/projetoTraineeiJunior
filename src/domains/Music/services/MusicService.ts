@@ -1,5 +1,6 @@
 import prisma from "../../../../database/prismaClient";
 import { Music } from "@prisma/client";
+import { QueryError } from "../../../../errors/QueryError";
 
 class MusicService {
   static async createMusic(body: Music) {
@@ -26,7 +27,11 @@ class MusicService {
     const music = await prisma.music.findUnique({
       where: { id_Music: requestedId },
     });
-    return music;
+    if (music) {
+      return music;
+    } else {
+      throw new QueryError("Não existe uma música com esse id!");
+    }
   }
 
   static async getMusicsHeardByUser(userId: number) {

@@ -37,3 +37,11 @@ Comandos importantes:
   npm install jsonwebtoken
 
   npm install --save @types/jsonwebtoken
+
+  npm install --save-dev jest
+
+  npm install --save-dev @types/jest
+
+  npm install --save-dev ts-jest
+
+  npm install --save-dev jest-mock-extended

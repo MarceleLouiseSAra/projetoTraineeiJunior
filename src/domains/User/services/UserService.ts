@@ -13,23 +13,29 @@ class UserService {
     const encrypted = await bcrypt.hash(password, saltRounds);
     return encrypted;
   }
+
   static async changePassword(userId: number, currentPassword: string, newPassword: string) {
     const user = await prisma.user.findUnique({
       where: { id_User: userId },
-      });
+    });
+
     if (!user) {
       throw new QueryError("Usuário não encontrado!");
-      } 
-      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    }
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+
     if (!isPasswordValid) {
       throw new NotAuthorizedError("Senha atual incorreta!");
-      } 
-      const encryptedPassword = await this.encryptPassword(newPassword);
-        await prisma.user.update({
-        where: { id_User: userId },
-        data: { password: encryptedPassword },
-      });
-    }
+    } 
+
+    const encryptedPassword = await this.encryptPassword(newPassword);
+    
+    await prisma.user.update({
+      where: { id_User: userId },
+      data: { password: encryptedPassword },
+    });
+  }
 
   static async createUser(body: User) {
     if (body.email == null) {
@@ -78,7 +84,12 @@ class UserService {
     const userById = await prisma.user.findUnique({
       where: { id_User: requestedId },
     });
-    return userById;
+
+    if (userById) {
+      return userById;
+    } else {
+      throw new QueryError("Não existe um usuário com esse id!");
+    }
   }
 
   static async updateUser(requestedId: number, body: User) {
@@ -124,7 +135,13 @@ class UserService {
   }
 
   static async deleteUser(requestedId: number) {
-    await prisma.user.delete({ where: { id_User: requestedId } });
+    const user = await UserService.getUserById(requestedId);
+    
+    if (user) {
+      await prisma.user.delete({ where: { id_User: requestedId } });
+    } else {
+      throw new QueryError("Não existe um usuário com esse id!")
+    }
   }
 
   static async listenToMusic(musicsId: number, usersId: number) {

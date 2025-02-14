@@ -1,0 +1,34 @@
+services:
+
+  api:
+    # environment:
+    #   - BD=${NAME_CONTAINER_DB}
+    build:
+      context: .
+      dockerfile: api.dockerfile
+    container_name: ${NOME_CONTAINER_API}
+    ports:
+      - "${PORT_API}:${PORT_API}"
+    volumes:
+      - ${DIRETORIO_HOST}:${DIRETORIO_CONTAINER}
+    depends_on: 
+      - mysql-server
+    command: npm start
+
+  mysql-server:
+    image: mysql:latest
+    container_name: ${NAME_CONTAINER_DB}
+    ports:
+      - "${PORTA_HOST}:${PORTA_CONTAINER}"
+    volumes:
+      - ${NOME_DO_VOLUME}:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    
+networks:
+  base_network:
+    driver: bridge
+
+volumes:
+  my_db:
