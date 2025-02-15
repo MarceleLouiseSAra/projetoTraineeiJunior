@@ -7,15 +7,23 @@ services:
       context: .
       dockerfile: api.dockerfile
     container_name: ${NOME_CONTAINER_API}
+    networks:
+      - base_network
     ports:
       - "${PORT_API}:${PORT_API}"
+      - "${PORTA_PRISMA}:${PORTA_PRISMA}"
+    expose:
+      - ${PORT_API}
     volumes:
       - ${DIRETORIO_HOST}:${DIRETORIO_CONTAINER}
+      - /code/node_modules
     depends_on: 
       - mysql-server
-    command: npm start
+    command:  sh -c "npx prisma migrate deploy && npm start"
 
   mysql-server:
+    networks:
+      - base_network
     image: mysql:latest
     container_name: ${NAME_CONTAINER_DB}
     ports:
@@ -25,6 +33,7 @@ services:
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_HOST=%
     
 networks:
   base_network:
