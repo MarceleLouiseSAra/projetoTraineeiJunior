@@ -8,6 +8,7 @@ const router = Router();
 router.get("/", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
   try {
+    checkRole(["ADMIN", "USER"], req, res, next);
     const musics = await MusicService.getMusics();
     res.status(statusCodes.SUCCESS).json(musics);
   } catch (error) {
@@ -19,6 +20,7 @@ router.get(
   "/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN", "USER"], req, res, next);
       const musicById = await MusicService.getMusicById(Number(req.params.id));
       res.status(statusCodes.SUCCESS).json(musicById);
     } catch (error) {
@@ -27,10 +29,10 @@ router.get(
   },
 );
 
-router.get(
-  "/get/:id", verifyJWT, checkRole,  
+router.get("/get/:id", verifyJWT, 
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN", "USER"], req, res, next);
       const musicId = Number(req.params.id);
       const music = await MusicService.getMusicById(musicId);
       if (!music) {
@@ -47,6 +49,7 @@ router.post(
   "/create", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN"], req, res, next);
       const newMusic = await MusicService.createMusic(req.body);
       res.status(statusCodes.CREATED).json(newMusic);
     } catch (error) {
@@ -56,9 +59,10 @@ router.post(
 );
 
 router.put(
-  "/update/:id", checkRole, verifyJWT,
+  "/update/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN"], req, res, next);
       const updatedMusic = await MusicService.updateMusic(
         Number(req.params.id),
         req.body,
@@ -71,9 +75,10 @@ router.put(
 );
 
 router.delete(
-  "/delete/:id", checkRole, verifyJWT,
+  "/delete/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN"], req, res, next);
       await MusicService.deleteMusic(Number(req.params.id));
       res.status(statusCodes.SUCCESS).json();
     } catch (error) {

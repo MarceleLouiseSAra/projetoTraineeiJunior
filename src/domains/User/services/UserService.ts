@@ -140,7 +140,7 @@ class UserService {
     if (user) {
       await prisma.user.delete({ where: { id_User: requestedId } });
     } else {
-      throw new QueryError("Não existe um usuário com esse id!")
+      throw new QueryError("Não existe um usuário com esse id!");
     }
   }
 

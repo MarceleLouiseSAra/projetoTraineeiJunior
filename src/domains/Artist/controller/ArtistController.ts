@@ -8,6 +8,7 @@ const router = Router();
 router.get("/", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
   try {
+    checkRole(["ADMIN", "USER"], req, res, next);
     const artists = await ArtistService.getArtists();
     res.status(statusCodes.SUCCESS).json(artists);
   } catch (error) {
@@ -19,6 +20,7 @@ router.get(
   "/:id", verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN", "USER"], req, res, next);
       const artistById = await ArtistService.getArtistById(
         Number(req.params.id),
       );
@@ -33,6 +35,7 @@ router.post(
   "/create", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN"], req, res, next);
       const newArtist = await ArtistService.createArtist(req.body);
       res.status(statusCodes.CREATED).json(newArtist);
     } catch (error) {
@@ -45,6 +48,7 @@ router.put(
   "/update/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN"], req, res, next);
       const updatedArtist = await ArtistService.updateArtist(
         Number(req.params.id),
         req.body,
@@ -60,6 +64,7 @@ router.delete(
   "/delete/:id", checkRole, verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      checkRole(["ADMIN"], req, res, next);
       await ArtistService.deleteArtist(Number(req.params.id));
       res.status(statusCodes.SUCCESS).json();
     } catch (error) {

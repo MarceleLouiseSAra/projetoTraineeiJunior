@@ -52,13 +52,17 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction){
     }
 }
 
-export async function checkRole(req: Request, res: Response, next: NextFunction) {
+export async function checkRole(rolesVector: string[], req: Request, res: Response, next: NextFunction) {
     try {
-        console.log(req.user?.admin)
-        if (req.user?.admin !== true || req.body.admin == true) {
-            throw new PermissionError("Somente administradores podem designar outros administradores!");
+        
+        for (var role of rolesVector) {
+            if (req.user?.admin !== role) {
+                throw new PermissionError("Somente administradores podem designar outros administradores!");
+            } else {
+                res.status(statusCodes.ACCEPTED).json();
+            }
         }
-        res.status(statusCodes.ACCEPTED).json()
+
     } catch (error) {
         next (error);
     }

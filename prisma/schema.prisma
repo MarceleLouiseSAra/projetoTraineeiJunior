@@ -16,7 +16,7 @@ model User {
   username       String
   email          String           @unique
   password       String
-  admin          Boolean
+  admin          String
   profilePic     String?
   created_at     DateTime?        @default(now())
   MusicsOnUsers  MusicsOnUsers[]

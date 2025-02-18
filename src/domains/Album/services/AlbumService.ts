@@ -1,5 +1,6 @@
 import prisma from "../../../../database/prismaClient";
 import { Album } from "@prisma/client";
+import { QueryError } from "../../../../errors/QueryError";
 
 class AlbumService {
   static async createAlbum(body: Album) {
@@ -23,7 +24,13 @@ class AlbumService {
     const albumById = await prisma.album.findUnique({
       where: { id_Album: requestedId },
     });
-    return albumById;
+
+    if (albumById) {
+      return albumById;
+    } else {
+      throw new QueryError("Não existe um usuário com esse id!");
+    }
+
   }
 
   static async updateAlbum(requestedId: number, body: Partial<Album>) {
@@ -35,9 +42,16 @@ class AlbumService {
   }
 
   static async deleteAlbum(requestedId: number) {
-    await prisma.album.delete({
-      where: { id_Album: requestedId },
-    });
+    const album = await AlbumService.getAlbumById(requestedId);
+
+    if (album) {
+      await prisma.album.delete({
+        where: { id_Album: requestedId },
+      });
+    } else {
+      throw new QueryError("Não existe um álbum com esse id!");
+    }
+
   }
 }
 
