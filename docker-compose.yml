@@ -19,7 +19,7 @@ services:
       - /code/node_modules
     depends_on: 
       - mysql-server
-    command: sh -c "npx prisma migrate deploy && npm start"
+    command:  sh -c "npx prisma migrate deploy && npm start"
 
   mysql-server:
     networks:
