@@ -43,7 +43,7 @@ class MusicService {
     return musics.map((entry: { music: Music }) => entry.music);
   }
   
-  static async updateMusic(requestedId: number, body: Music) {
+  static async updateMusic(requestedId: number, body: Partial<Music>) {
     const updatedMusic = await prisma.music.update({
       data: {
         title: body.title,
@@ -54,9 +54,9 @@ class MusicService {
       },
       where: { id_Music: requestedId },
     });
-
+  
     return updatedMusic;
-  }
+  }  
 
   static async deleteMusic(requestedId: number) {
     await prisma.music.delete({ where: { id_Music: requestedId } });
