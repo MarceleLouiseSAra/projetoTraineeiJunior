@@ -3,6 +3,7 @@ import MusicService from "../../Music/services/MusicService";
 import { prismaMock } from "../../../../config/singleton";
 import bcrypt from "bcrypt";
 import { QueryError } from "../../../../errors/QueryError";
+import { NotAuthorizedError } from "../../../../errors/NotAuthorizedError";
 
 
 describe('createUser', () => {
@@ -116,13 +117,13 @@ describe('updateUser', () => {
         prismaMock.user.findFirst.mockResolvedValue(null);
 
         await expect(UserService.updateUser(requestedId, body)).rejects.toThrow(
-            new QueryError("Não existe um usuário com esse id!")
+            new NotAuthorizedError("Não é possível trocar o email!")
         ); // testa a exceção QueryError é lançada quando albumById é null
 
-        expect(prismaMock.album.update).toHaveBeenCalledWith({
-            where: { id_Album : requestedId },
+        expect(prismaMock.user.update).toHaveBeenCalledWith({
+            where: { id_User : requestedId },
             data: body
-        }); // testa se o update é chamado com o parâmetro where: { id_Album : requestedId }
+        }); // testa se o update é chamado com o parâmetro where: { id_User : requestedId }
 
     });
 
