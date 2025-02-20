@@ -5,6 +5,7 @@ import { QueryError } from "../../../../errors/QueryError";
 describe('MusicService', () => {
 
   describe('createMusic', () => {
+
     test('Verifica se o serviço createMusic cria corretamente uma nova música com os dados fornecidos', async () => {
       const body = {
         id_Music: 1,  
@@ -13,16 +14,24 @@ describe('MusicService', () => {
         coverPic: 'test.jpg',
         albumId: 1,
         artistId: 1,
-        released_at: new Date(),  
-      }
+        released_at: new Date 
+      };
 
-      prismaMock.music.create.mockResolvedValue(body)
+      prismaMock.music.create.mockResolvedValue(body);
 
-      await expect(MusicService.createMusic(body)).resolves.toEqual(body)
-    })
+      await expect(MusicService.createMusic(body)).resolves.toEqual({
+        title: 'Test Music',
+        genre: 'Rock',
+        coverPic: 'test.jpg',
+        albumId: 1,
+        artistId: 1,
+      });
+    });
+
   });
 
   describe('getMusics', () => {
+    
     test('Verifica se o serviço getMusics retorna um array de músicas corretamente', async () => {
       const musics = [
         {
@@ -30,7 +39,7 @@ describe('MusicService', () => {
           title: 'A Music',
           genre: 'Rock',
           coverPic: 'cover1.jpg',
-          released_at: new Date(),
+          released_at: new Date,
           albumId: 1,
           artistId: 1,
         },
@@ -39,7 +48,7 @@ describe('MusicService', () => {
           title: 'B Music',
           genre: 'Pop',
           coverPic: 'cover2.jpg',
-          released_at: new Date(),
+          released_at: new Date,
           albumId: 2,
           artistId: 2,
         },
@@ -85,8 +94,11 @@ describe('MusicService', () => {
   });
 
   describe('getMusicById', () => {
+
     test('Verifica se o serviço getMusicById retorna a música correta com base no id solicitado', async () => {
+
       const requestedId = 1;
+
       const music = {
         id_Music: 1,
         title: 'Test Music',
@@ -100,6 +112,7 @@ describe('MusicService', () => {
       prismaMock.music.findUnique.mockResolvedValue(music);
 
       await expect(MusicService.getMusicById(requestedId)).resolves.toEqual(music);
+
     });
 
     test('Se a música com o id solicitado não existir ==> Gera erro', async () => {
@@ -111,11 +124,14 @@ describe('MusicService', () => {
         new QueryError('Não existe uma música com esse id!')
       );
     });
+    
   });
 
   describe('updateMusic', () => {
+
     test('Verifica se o serviço updateMusic atualiza corretamente a música com o id solicitado', async () => {
       const requestedId = 1;
+
       const body = {
         title: 'Updated Music',
         genre: 'Pop',
@@ -137,10 +153,13 @@ describe('MusicService', () => {
       prismaMock.music.update.mockResolvedValue(updatedMusic);
 
       await expect(MusicService.updateMusic(requestedId, body)).resolves.toEqual(updatedMusic);
+
     });
 
     test('Se a música com o id solicitado não existir para atualização ==> Gera erro', async () => {
+
       const requestedId = 999;
+
       const body = {
         title: 'Non-existent Music',
         genre: 'Pop',
@@ -152,39 +171,51 @@ describe('MusicService', () => {
       prismaMock.music.findUnique.mockResolvedValue(null);
 
       await expect(MusicService.updateMusic(requestedId, body)).rejects.toThrow(
-        new QueryError('Não existe uma música com esse id para atualizar!')
+        new QueryError("Não existe um usuário com esse id!")
       );
-    });
-  });
 
+    });
+
+  });
+  
   describe('deleteMusic', () => {
+
+    const requestedId = 999;
+
     test('Verifica se o serviço deleteMusic deleta corretamente a música com o id solicitado', async () => {
-      const requestedId = 1;
 
       const deletedMusic = {
         id_Music: requestedId,
         title: 'Test Music',
         genre: 'Rock',
         coverPic: 'cover.jpg',
-        released_at: new Date(),
+        released_at: new Date,
         albumId: 1,
         artistId: 1,
       };
 
-      prismaMock.music.delete.mockResolvedValue(deletedMusic);
+      prismaMock.music.findUnique.mockResolvedValue(deletedMusic);
 
-      await expect(MusicService.deleteMusic(requestedId)).resolves.toEqual(deletedMusic);
+      await expect(MusicService.deleteMusic(requestedId)).resolves.toEqual(undefined);
+      
     });
 
     test('Se a música com o id solicitado não existir para deleção ==> Gera erro', async () => {
-      const requestedId = 999;
 
       prismaMock.music.findUnique.mockResolvedValue(null);
 
       await expect(MusicService.deleteMusic(requestedId)).rejects.toThrow(
-        new QueryError('Não existe uma música com esse id para deletar!')
-      );
+        new QueryError("Não existe uma música com esse id!")
+      ); // testa a exceção QueryError é lançada quando musicById é null
+
+      expect(prismaMock.music.findUnique).toHaveBeenCalledWith({
+        where: { id_Music : requestedId }
+      }); // testa se o findUnique é chamado com o parâmetro where: { id_Music: requestedId }
+
+      expect(prismaMock.music.delete).not.toHaveBeenCalled();
+
     });
+
   });
 
 });

@@ -38,16 +38,20 @@ class AlbumService {
       where: { id_Album: requestedId },
       data: body,
     });
-    return updatedAlbum;
+
+    if (updatedAlbum) {
+      return updatedAlbum;
+    } else {
+      throw new QueryError("Não existe um usuário com esse id!");
+    }
+
   }
 
   static async deleteAlbum(requestedId: number) {
     const album = await AlbumService.getAlbumById(requestedId);
 
     if (album) {
-      await prisma.album.delete({
-        where: { id_Album: requestedId },
-      });
+      await prisma.album.delete({ where: { id_Album: requestedId } });
     } else {
       throw new QueryError("Não existe um álbum com esse id!");
     }

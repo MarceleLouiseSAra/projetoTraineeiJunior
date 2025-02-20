@@ -20,6 +20,7 @@ class MusicService {
     const musics = await prisma.music.findMany({
       orderBy: { title: "asc" },
     });
+
     return musics;
   }
 
@@ -27,6 +28,7 @@ class MusicService {
     const music = await prisma.music.findUnique({
       where: { id_Music: requestedId },
     });
+
     if (music) {
       return music;
     } else {
@@ -45,21 +47,27 @@ class MusicService {
   
   static async updateMusic(requestedId: number, body: Partial<Music>) {
     const updatedMusic = await prisma.music.update({
-      data: {
-        title: body.title,
-        genre: body.genre,
-        coverPic: body.coverPic,
-        albumId: body.albumId,
-        artistId: body.artistId,
-      },
       where: { id_Music: requestedId },
+      data: body,
     });
   
-    return updatedMusic;
+    if (updatedMusic) {
+      return updatedMusic;
+    } else {
+      throw new QueryError("Não existe um usuário com esse id!");
+    }
+
   }  
 
   static async deleteMusic(requestedId: number) {
-    await prisma.music.delete({ where: { id_Music: requestedId } });
+    const music = await MusicService.getMusicById(requestedId);
+
+    if (music) {
+      await prisma.music.delete({ where: { id_Music: requestedId } });
+    } else {
+      throw new QueryError("Não existe uma música com esse id!");
+    }
+
   }
 }
 
