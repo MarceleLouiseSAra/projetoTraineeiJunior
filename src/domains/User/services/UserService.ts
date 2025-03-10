@@ -15,6 +15,7 @@ class UserService {
   }
 
   static async changePassword(userId: number, currentPassword: string, newPassword: string) {
+
     const user = await prisma.user.findUnique({
       where: { id_User: userId },
     });
@@ -35,6 +36,7 @@ class UserService {
       where: { id_User: userId },
       data: { password: encryptedPassword },
     });
+    
   }
 
   static async createUser(body: User) {

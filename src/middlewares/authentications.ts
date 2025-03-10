@@ -57,9 +57,9 @@ export async function checkRole(rolesVector: string[], req: Request, res: Respon
         
         for (var role of rolesVector) {
             if (req.user?.admin !== role) {
-                throw new PermissionError("Somente administradores podem designar outros administradores!");
+                throw new PermissionError("Somente administradores podem realizar esta ação!");
             } else {
-                res.status(statusCodes.ACCEPTED).json();
+                break;
             }
         }
 
