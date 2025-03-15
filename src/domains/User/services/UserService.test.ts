@@ -15,7 +15,7 @@ describe('createUser', () => {
             username: 'Sally',
             email: 'louise20marcele03@gmail.com',
             password: "1234",
-            admin: false,
+            admin: "USER",
             profilePic: "coverPic.png",
             created_at: new Date
         };
@@ -44,7 +44,7 @@ describe('getUsers', () => {
             username: 'Sally',
             email: 'louise20marcele03@gmail.com',
             password: "1234",
-            admin: false,
+            admin: "USER",
             profilePic: "coverPic.png",
             created_at: new Date
             }
@@ -71,7 +71,7 @@ describe('getUserById', () => {
             username: 'Sally',
             email: 'louise20marcele03@gmail.com',
             password: "1234",
-            admin: false,
+            admin: "USER",
             profilePic: "coverPic.png",
             created_at: new Date
         };
@@ -107,7 +107,7 @@ describe('updateUser', () => {
         username: 'Sally',
         email: 'louise20marcele03@gmail.com',
         password: "1234",
-        admin: false,
+        admin: "USER",
         profilePic: "coverPic.png",
         created_at: new Date
     };
@@ -148,7 +148,7 @@ describe('deleteUser', () => {
             username: 'Sally',
             email: 'louise20marcele03@gmail.com',
             password: "1234",
-            admin: false,
+            admin: "USER",
             profilePic: "coverPic.png",
             created_at: new Date
         }
