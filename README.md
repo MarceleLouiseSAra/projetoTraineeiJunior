@@ -1,7 +1,27 @@
-# TraineeiJuniorSemana5
+# Projeto final do trainee da iJunior
 
-Comandos importantes:
+## Modo de uso:
 
+```bash:
+npm i
+
+docker compose up
+```
+
+### Para executar comandos dentro do container:
+
+```bash:
+docker exec -it <nome_do_container> npx prisma validate
+
+docker exec -it <nome_do_container> npx prisma generate
+
+docker exec -it <nome_do_container> npx prisma migrate dev
+
+```
+
+### Comandos de configuração de ambiente:
+
+```bash
   npm init -y
 
   npm install typescript ts-node @types/node --save-dev
@@ -10,11 +30,9 @@ Comandos importantes:
   
   npm install prisma --save-dev
   
-  npm install node
-  
   npm install @prisma/client
   
-  npx prisma init --datasource-provider sqlite
+  # npx prisma init --datasource-provider sqlite
 
   npx prisma validate
 
@@ -45,3 +63,5 @@ Comandos importantes:
   npm install --save-dev ts-jest
 
   npm install --save-dev jest-mock-extended
+```
+
