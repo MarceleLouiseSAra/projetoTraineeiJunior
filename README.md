@@ -20,7 +20,6 @@ docker exec -it <backend_app> npx prisma validate
 docker exec -it <backend_app> npx prisma generate
 
 docker exec -it <backend_app> npx prisma migrate dev
-
 ```
 
 ### Comandos de configuração de ambiente:
