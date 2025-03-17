@@ -11,11 +11,11 @@ docker compose up
 ### Para executar comandos dentro do container:
 
 ```bash:
-docker exec -it <nome_do_container> npx prisma validate
+docker exec -it <backend_app> npx prisma validate
 
-docker exec -it <nome_do_container> npx prisma generate
+docker exec -it <backend_app> npx prisma generate
 
-docker exec -it <nome_do_container> npx prisma migrate dev
+docker exec -it <backend_app> npx prisma migrate dev
 
 ```
 
