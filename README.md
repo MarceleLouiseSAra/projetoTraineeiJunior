@@ -4,8 +4,10 @@ A *iJunior* é a empresa júnior do Departamento de Ciência da Computação da 
 
 O programa trainee da iJunior contempla quatro "trilhas" de conhecimentos, sendo o desenvolvimento back-end uma delas. Nesta, aprende-se: 
 * a utilizar as ferramentas *npm* e *Node.js*, para gerenciamento de pacotes e concepção de um ambiente de runtime Javascript, respectivamente;
-* *Typescript*, uma extensão tipada do Javascript; arquitetura *Model-View-Controller*;
-* modelagem de bancos de dados relacionais; rotas C.R.U.D. para APIs Rest;
+* *Typescript*, uma extensão tipada do Javascript;
+* arquitetura *Model-View-Controller*;
+* modelagem de bancos de dados relacionais;
+* rotas C.R.U.D. para APIs Rest;
 * utilização do *Prisma*, uma O.R.M. (Object-Relational Mapping);
 * a utilizar o framework *Express*, para manipulação de rotas, middlewares e solicitações HTTP;
 * *TS-Node-Dev*, para reiniciar o servidor após cada nova alteração;
