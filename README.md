@@ -58,7 +58,7 @@ docker exec -it <backend_app> npx prisma migrate dev
 
   npx prisma migrate dev
 
-  npx prisma studio
+  # npx prisma studio
 
   npm install bcrypt
 
