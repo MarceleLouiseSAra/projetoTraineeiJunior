@@ -15,6 +15,8 @@ O programa trainee da iJunior contempla quatro "trilhas" de conhecimentos, sendo
 * *Docker*, para isolar um ambiente de desenvolvimento padrão a ser compartilhado;
 * e *Jest*, para a realização de testes unitários do código.
 
+através do desenvolvimento do presente projeto.
+
 ## Modo de uso:
 
 ```bash:
