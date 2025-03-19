@@ -11,7 +11,7 @@ O programa trainee da iJunior contempla quatro "trilhas" de conhecimentos, sendo
 * utilização do *Prisma*, uma O.R.M. (Object-Relational Mapping);
 * a utilizar o framework *Express*, para manipulação de rotas, middlewares e solicitações HTTP;
 * *TS-Node-Dev*, para reiniciar o servidor após cada nova alteração;
-* a ferramenta *ESLint* para garantir a consistência da sintaxe do código;
+* a ferramenta *ESLint* para padronizar a sintaxe do código, garantindo consistência;
 * *Docker*, para isolar um ambiente de desenvolvimento padrão a ser compartilhado;
 * e *Jest*, para a realização de testes unitários do código.
 
