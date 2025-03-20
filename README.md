@@ -2,8 +2,8 @@
 
 A *iJunior* é a empresa júnior do Departamento de Ciência da Computação da Universidade Federal de Minas Gerais e comercializa websites, e-commerces, aplicativos e sistemas web há mais de 20 anos, proporcionando experiência prática com projetos reais e clientes reais para os seus efetivados.
 
-O programa trainee da iJunior contempla quatro "trilhas" de conhecimentos, sendo o desenvolvimento 
-back-end uma delas. Nesta, aprende-se: 
+O programa trainee da iJunior contempla quatro "trilhas" de conhecimentos, sendo o 
+desenvolvimento back-end uma delas. Nesta, aprende-se: 
 * a utilizar as ferramentas *npm* e *Node.js*, para gerenciamento de pacotes e concepção de um ambiente de runtime Javascript, respectivamente;
 * *Typescript*, uma extensão tipada do Javascript;
 * programação assíncrona;
