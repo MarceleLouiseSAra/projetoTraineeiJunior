@@ -62,6 +62,14 @@ docker exec -it <backend_app> npx prisma migrate dev
 
   # npx prisma studio
 
+  npm install ts-node-dev --save-dev
+
+  npm install dotenv
+
+  npm install cors --save
+
+  npm install express --save
+
   npm install bcrypt
 
   npm install --save @types/bcrypt
