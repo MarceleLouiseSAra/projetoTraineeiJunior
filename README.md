@@ -50,7 +50,7 @@ docker exec -it <backend_app> npx prisma migrate dev
   
   npm install @prisma/client
   
-  # npx prisma init --datasource-provider sqlite
+  npx prisma init # --datasource-provider sqlite
 
   npx prisma validate
 
